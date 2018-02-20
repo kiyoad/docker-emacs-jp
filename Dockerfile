@@ -65,8 +65,26 @@ RUN \
   : apt-get autoremove -qy && \
   rm -rf /var/lib/apt/lists/*
 
-#RUN apt-get update && apt-get upgrade -y
-#RUN apt-get install -qy libxft2 librsvg2-2 libmagickwand-6.q16-2 libgconf-2-4 libotf0 libm17n-0
+RUN \
+  apt-get update && apt-get upgrade -y && \
+  apt-get install -qy python3-pip && \
+  rm -rf /var/lib/apt/lists/* && \
+  pip3 install virtualenv flake8 pygments diff-highlight
+
+ENV GOPATH /opt/go
+RUN \
+  export golang=go1.10 && \
+  wget -q -O - https://storage.googleapis.com/golang/${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
+  mkdir /opt/go && \
+  export PATH=$PATH:/usr/local/go/bin && \
+  go get -u github.com/rogpeppe/godef && \
+  go get -u github.com/nsf/gocode && \
+  go get -u github.com/dougm/goflymake && \
+  go get -u github.com/jstemmer/gotags && \
+  go get -u github.com/alecthomas/gometalinter && \
+  /opt/go/bin/gometalinter --install && \
+  (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
+  (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;)
 
 USER ${INSTALL_USER}
 WORKDIR /home/${INSTALL_USER}
