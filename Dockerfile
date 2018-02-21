@@ -2,12 +2,12 @@ FROM ubuntu:xenial
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV INSTALL_USER developer
+ARG INSTALL_USER=developer
+ARG UID=1000
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE "ja_JP:ja"
 ENV SHELL /bin/bash
 ENV TERM xterm-256color
-ENV UID 1000
 
 RUN \
   apt-get update && apt-get upgrade -y && \
