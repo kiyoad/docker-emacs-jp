@@ -2,23 +2,6 @@ FROM ubuntu:xenial
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG INSTALL_USER=developer
-ARG UID=1000
-ENV LANG ja_JP.UTF-8
-ENV LANGUAGE "ja_JP:ja"
-ENV SHELL /bin/bash
-ENV TERM xterm-256color
-
-RUN \
-  apt-get update && apt-get upgrade -y && \
-  apt-get install -qy language-pack-ja && \
-  rm -rf /var/lib/apt/lists/* && \
-  update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
-  cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
-  echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata && \
-  adduser --disabled-password --gecos "Developer" --uid ${UID} ${INSTALL_USER} && \
-  chown -R ${INSTALL_USER}:${INSTALL_USER} /home/${INSTALL_USER}
-
 RUN \
   export emacs=emacs-25.3 && \
   echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
@@ -34,9 +17,6 @@ RUN \
   mv ${emacs} .build_emacs && \
   (cd .build_emacs && ./configure && make install) && \
   rm -rf .build_emacs && \
-  : apt-get remove -qy gcc make xz-utils && \
-  : apt-get autoremove -qy && \
-  : apt-get install -qy libxft2 librsvg2-2 libmagickwand-6.q16-2 libgconf-2-4 libotf0 libm17n-0 && \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
@@ -48,8 +28,6 @@ RUN \
   mv ${global} .build_global && \
   (cd .build_global && ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
   rm -rf .build_global && \
-  : apt-get remove -qy gcc make && \
-  : apt-get autoremove -qy && \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
@@ -61,8 +39,6 @@ RUN \
   mv git-${git} .build_git && \
   (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install) && \
   rm -rf .build_git && \
-  : apt-get remove -qy gcc make xz-utils gettext && \
-  : apt-get autoremove -qy && \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
@@ -85,6 +61,25 @@ RUN \
   /opt/go/bin/gometalinter --install && \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
   (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;)
+
+ARG INSTALL_USER=developer
+ARG UID=1000
+
+RUN \
+  apt-get update && apt-get upgrade -y && \
+  apt-get install -qy language-pack-ja && \
+  apt-get install -qy pandoc && \
+  rm -rf /var/lib/apt/lists/* && \
+  update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
+  cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+  echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata && \
+  adduser --disabled-password --gecos "Developer" --uid ${UID} ${INSTALL_USER} && \
+  chown -R ${INSTALL_USER}:${INSTALL_USER} /home/${INSTALL_USER}
+
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE "ja_JP:ja"
+ENV SHELL /bin/bash
+ENV TERM xterm-256color
 
 USER ${INSTALL_USER}
 WORKDIR /home/${INSTALL_USER}
