@@ -67,14 +67,15 @@ ARG UID=1000
 
 RUN \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy language-pack-ja && \
-  apt-get install -qy pandoc && \
+  apt-get install -qy language-pack-ja sudo && \
   rm -rf /var/lib/apt/lists/* && \
   update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
   cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
   echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata && \
   adduser --disabled-password --gecos "Developer" --uid ${UID} ${INSTALL_USER} && \
-  chown -R ${INSTALL_USER}:${INSTALL_USER} /home/${INSTALL_USER}
+  chown -R ${INSTALL_USER}:${INSTALL_USER} /home/${INSTALL_USER} && \
+  echo "${INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${INSTALL_USER} && \
+  chmod 0440 /etc/sudoers.d/${INSTALL_USER}
 
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE "ja_JP:ja"
