@@ -62,6 +62,22 @@ RUN \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
   (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;)
 
+# https://ipafont.ipa.go.jp/old/ipafont/download.html
+COPY ipagp.ttf /opt/ipagp.ttf
+RUN \
+  apt-get update && apt-get upgrade -y && \
+  apt-get install -qy pandoc ruby openjdk-8-jdk && \
+  rm -rf /var/lib/apt/lists/* && \
+  gem install -N asciidoctor && \
+  gem install -N --pre asciidoctor-pdf && \
+  gem install -N coderay && \
+  gem install -N asciidoctor-pdf-cjk && \
+  gem install -N asciidoctor-diagram && \
+  export asciidoctor_pdf_data_path=$(find /var/lib/gems -maxdepth 3 -name "asciidoctor-pdf-[0-9]*" | fgrep "gems/asciidoctor-pdf")/data && \
+  sed -i.bak -e "/^  catalog:/a\    IPA PGothic:\n      normal: ipagp.ttf\n      bold: ipagp.ttf\n      italic: ipagp.ttf\n      bold_italic: ipagp.ttf" \
+  -e "s/    - M+ 1p Fallback/    - IPA PGothic/1" ${asciidoctor_pdf_data_path}/themes/default-theme.yml && \
+  cp /opt/ipagp.ttf ${asciidoctor_pdf_data_path}/fonts/ipagp.ttf
+
 ARG INSTALL_USER=developer
 ARG UID=1000
 
