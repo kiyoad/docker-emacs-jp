@@ -77,10 +77,7 @@ RUN \
   echo "${INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${INSTALL_USER} && \
   chmod 0440 /etc/sudoers.d/${INSTALL_USER}
 
-ENV LANG ja_JP.UTF-8
-ENV LANGUAGE "ja_JP:ja"
-ENV SHELL /bin/bash
-ENV TERM xterm-256color
+ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" SHELL=/bin/bash TERM=xterm-256color
 
 USER ${INSTALL_USER}
 WORKDIR /home/${INSTALL_USER}
