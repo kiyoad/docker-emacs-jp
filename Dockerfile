@@ -66,7 +66,7 @@ RUN \
 COPY ipagp.ttf /opt/ipagp.ttf
 RUN \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy pandoc ruby openjdk-8-jdk && \
+  apt-get install -qy pandoc ruby openjdk-8-jdk graphviz && \
   rm -rf /var/lib/apt/lists/* && \
   gem install -N asciidoctor && \
   gem install -N --pre asciidoctor-pdf && \
