@@ -85,6 +85,7 @@ RUN \
   apt-get update && apt-get upgrade -y && \
   apt-get install -qy language-pack-ja sudo && \
   rm -rf /var/lib/apt/lists/* && \
+  echo "lang en_US" > /etc/aspell.conf && \
   update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
   cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
   echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata && \
