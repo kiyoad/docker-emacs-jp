@@ -10,8 +10,8 @@ RUN \
   apt-get install -qy gcc make xz-utils wget && \
   apt-get install -qy libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev && \
   apt-get install -qy aspell wamerican && \
-  apt-get install -qy fonts-takao fonts-takao-gothic fonts-takao-mincho fonts-takao-pgothic && \
   apt-get install -qy cmigemo exuberant-ctags silversearcher-ag && \
+  apt-get install -qy fonts-takao fonts-takao-gothic fonts-takao-mincho fonts-takao-pgothic && \
   apt-get install -qy sdic sdic-edict sdic-gene95 && \
   wget -q -O - http://ftpmirror.gnu.org/emacs/${emacs}.tar.xz | tar xJf - && \
   mv ${emacs} .build_emacs && \
@@ -21,19 +21,15 @@ RUN \
 
 RUN \
   export global=global-6.6.2 && \
-  apt-get update && apt-get upgrade -y && \
-  apt-get install -qy gcc make && \
-  apt-get install -qy libncurses5-dev && \
   wget -q -O - http://ftpmirror.gnu.org/global/${global}.tar.gz | tar zxf - && \
   mv ${global} .build_global && \
   (cd .build_global && ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
-  rm -rf .build_global && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf .build_global
 
 RUN \
   export git=2.16.2 && \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy gcc make xz-utils gettext && \
+  apt-get install -qy gettext && \
   apt-get install -qy libssl-dev libcurl4-openssl-dev libexpat1-dev && \
   wget --no-check-certificate -q -O - https://www.kernel.org/pub/software/scm/git/git-${git}.tar.xz | tar xJf - && \
   mv git-${git} .build_git && \
