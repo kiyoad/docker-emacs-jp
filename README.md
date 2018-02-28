@@ -37,7 +37,7 @@ Server:
 ### Installing
 
 1. Temporarily set /proc/sys/kernel/randomize\_va\_space to 0.
-    * `$ sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space`
+    * `$ sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space"`
 1. Get IPA P Gothic font and store ipagp.ttf in the same directory as Dockerfile.
 1. Run `docker_build.sh` and wait a while.
     * `$ ./docker_build.sh`
