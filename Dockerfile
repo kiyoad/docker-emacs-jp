@@ -74,6 +74,8 @@ RUN \
   -e "s/    - M+ 1p Fallback/    - IPA PGothic/1" ${asciidoctor_pdf_data_path}/themes/default-theme.yml && \
   cp /opt/ipagp.ttf ${asciidoctor_pdf_data_path}/fonts/ipagp.ttf
 
+COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
+
 ARG INSTALL_USER=developer
 ARG UID=1000
 
