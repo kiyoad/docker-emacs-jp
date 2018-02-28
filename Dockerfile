@@ -31,7 +31,7 @@ RUN \
   apt-get update && apt-get upgrade -y && \
   apt-get install -qy gettext && \
   apt-get install -qy libssl-dev libcurl4-openssl-dev libexpat1-dev && \
-  wget --no-check-certificate -q -O - https://www.kernel.org/pub/software/scm/git/git-${git}.tar.xz | tar xJf - && \
+  wget -q -O - https://www.kernel.org/pub/software/scm/git/git-${git}.tar.xz | tar xJf - && \
   mv git-${git} .build_git && \
   (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install) && \
   rm -rf .build_git && \
