@@ -1,8 +1,6 @@
 FROM ubuntu:xenial
 
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN \
+RUN DEBIAN_FRONTEND=noninteractive \
   export emacs=emacs-25.3 && \
   echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   echo "deb-src http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
@@ -19,7 +17,7 @@ RUN \
   rm -rf .build_emacs && \
   rm -rf /var/lib/apt/lists/*
 
-RUN \
+RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
   apt-get install -qy python3-pip && \
   rm -rf /var/lib/apt/lists/* && \
@@ -33,7 +31,7 @@ RUN \
   cp /usr/local/share/gtags/gtags.conf /etc/gtags.conf && \
   rm -rf .build_global
 
-RUN \
+RUN DEBIAN_FRONTEND=noninteractive \
   export git=2.16.2 && \
   apt-get update && apt-get upgrade -y && \
   apt-get install -qy gettext && \
@@ -61,7 +59,7 @@ RUN \
 
 # https://ipafont.ipa.go.jp/old/ipafont/download.html
 COPY ipagp.ttf /opt/ipagp.ttf
-RUN \
+RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
   apt-get install -qy pandoc ruby openjdk-8-jre graphviz && \
   rm -rf /var/lib/apt/lists/* && \
@@ -80,7 +78,7 @@ COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 ARG INSTALL_USER=developer
 ARG UID=1000
 
-RUN \
+RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
   apt-get install -qy language-pack-ja sudo && \
   rm -rf /var/lib/apt/lists/* && \
