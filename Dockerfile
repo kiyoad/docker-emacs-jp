@@ -20,10 +20,17 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
+  apt-get update && apt-get upgrade -y && \
+  apt-get install -qy python3-pip && \
+  rm -rf /var/lib/apt/lists/* && \
+  pip3 install virtualenv flake8 pygments diff-highlight
+
+RUN \
   export global=global-6.6.2 && \
   wget -q -O - http://ftpmirror.gnu.org/global/${global}.tar.gz | tar zxf - && \
   mv ${global} .build_global && \
-  (cd .build_global && ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
+  (cd .build_global && PYTHON=/usr/bin/python3 ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
+  cp /usr/local/share/gtags/gtags.conf /etc/gtags.conf && \
   rm -rf .build_global
 
 RUN \
@@ -36,12 +43,6 @@ RUN \
   (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install) && \
   rm -rf .build_git && \
   rm -rf /var/lib/apt/lists/*
-
-RUN \
-  apt-get update && apt-get upgrade -y && \
-  apt-get install -qy python3-pip && \
-  rm -rf /var/lib/apt/lists/* && \
-  pip3 install virtualenv flake8 pygments diff-highlight
 
 ENV GOPATH /opt/go
 RUN \
