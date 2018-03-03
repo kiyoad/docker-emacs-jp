@@ -40,7 +40,7 @@ RUN \
   apt-get install -qy libssl-dev libcurl4-openssl-dev libexpat1-dev && \
   wget -q -O - https://www.kernel.org/pub/software/scm/git/git-${git}.tar.xz | tar xJf - && \
   mv git-${git} .build_git && \
-  (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install) && \
+  (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install && cd contrib/completion && cp git-completion.bash git-prompt.sh /opt) && \
   rm -rf .build_git && \
   rm -rf /var/lib/apt/lists/*
 
