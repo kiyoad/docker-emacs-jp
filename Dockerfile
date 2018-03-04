@@ -21,7 +21,18 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
   apt-get install -qy python3-pip && \
   rm -rf /var/lib/apt/lists/* && \
-  pip3 install virtualenv flake8 pygments diff-highlight
+  pip3 install virtualenv flake8 pygments diff-highlight pylint
+
+RUN \
+  export node=8.9.4 && \
+  wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
+  chown -R root:root /usr/local/node-v${node}-linux-x64 && \
+  export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
+  npm install --global handlebars && \
+  npm install --global eslint && \
+  npm install --global jshint && \
+  npm install --global standard && \
+  (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
 
 RUN \
   export global=global-6.6.2 && \
