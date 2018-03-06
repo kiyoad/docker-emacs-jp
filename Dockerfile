@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 
 RUN DEBIAN_FRONTEND=noninteractive \
-  export emacs=emacs-25.3 && \
+  export emacs=25.3 && \
   echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   echo "deb-src http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   apt-get update && apt-get upgrade -y && \
@@ -11,8 +11,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get install -qy cmigemo exuberant-ctags silversearcher-ag && \
   apt-get install -qy fonts-takao fonts-takao-gothic fonts-takao-mincho fonts-takao-pgothic && \
   apt-get install -qy sdic sdic-edict sdic-gene95 && \
-  wget -q -O - http://ftpmirror.gnu.org/emacs/${emacs}.tar.xz | tar xJf - && \
-  mv ${emacs} .build_emacs && \
+  wget -q -O - http://ftpmirror.gnu.org/emacs/emacs-${emacs}.tar.xz | tar xJf - && \
+  mv emacs-${emacs} .build_emacs && \
   (cd .build_emacs && ./configure && make install) && \
   rm -rf .build_emacs && \
   rm -rf /var/lib/apt/lists/*
@@ -37,9 +37,9 @@ RUN \
   (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
 
 RUN \
-  export global=global-6.6.2 && \
-  wget -q -O - http://ftpmirror.gnu.org/global/${global}.tar.gz | tar zxf - && \
-  mv ${global} .build_global && \
+  export global=6.6.2 && \
+  wget -q -O - http://ftpmirror.gnu.org/global/global-${global}.tar.gz | tar zxf - && \
+  mv global-${global} .build_global && \
   (cd .build_global && PYTHON=/usr/bin/python3 ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
   cp /usr/local/share/gtags/gtags.conf /etc/gtags.conf && \
   rm -rf .build_global
@@ -57,8 +57,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 ENV GOPATH /opt/go
 RUN \
-  export golang=go1.10 && \
-  wget -q -O - https://storage.googleapis.com/golang/${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
+  export golang=1.10 && \
+  wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
   go get -u github.com/rogpeppe/godef && \
