@@ -88,6 +88,11 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 
+RUN \
+  export hadolint=1.5.0 && \
+  wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
+  chmod a+x /usr/local/bin/hadolint
+
 ARG INSTALL_USER=developer
 ARG UID=1000
 
