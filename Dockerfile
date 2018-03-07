@@ -5,12 +5,12 @@ RUN DEBIAN_FRONTEND=noninteractive \
   echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   echo "deb-src http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy gcc make xz-utils wget bsdmainutils ssh && \
-  apt-get install -qy libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev && \
-  apt-get install -qy aspell wamerican && \
-  apt-get install -qy cmigemo exuberant-ctags silversearcher-ag && \
-  apt-get install -qy fonts-takao fonts-takao-gothic fonts-takao-mincho fonts-takao-pgothic && \
-  apt-get install -qy sdic sdic-edict sdic-gene95 && \
+  apt-get install --no-install-recommends -qy gcc make xz-utils wget bsdmainutils ssh && \
+  apt-get install --no-install-recommends -qy libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev && \
+  apt-get install --no-install-recommends -qy aspell wamerican && \
+  apt-get install --no-install-recommends -qy cmigemo exuberant-ctags silversearcher-ag && \
+  apt-get install --no-install-recommends -qy fonts-takao fonts-takao-gothic fonts-takao-mincho fonts-takao-pgothic && \
+  apt-get install --no-install-recommends -qy sdic sdic-edict sdic-gene95 && \
   wget -q -O - http://ftpmirror.gnu.org/emacs/emacs-${emacs}.tar.xz | tar xJf - && \
   mv emacs-${emacs} .build_emacs && \
   (cd .build_emacs && ./configure && make install) && \
@@ -19,7 +19,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy python3-pip && \
+  apt-get install --no-install-recommends -qy python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* && \
   pip3 install virtualenv flake8 pygments diff-highlight pylint proselint
 
@@ -47,8 +47,8 @@ RUN \
 RUN DEBIAN_FRONTEND=noninteractive \
   export git=2.16.2 && \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy gettext && \
-  apt-get install -qy libssl-dev libcurl4-openssl-dev libexpat1-dev && \
+  apt-get install --no-install-recommends -qy gettext && \
+  apt-get install --no-install-recommends -qy libssl-dev libcurl4-openssl-dev libexpat1-dev && \
   wget -q -O - https://www.kernel.org/pub/software/scm/git/git-${git}.tar.xz | tar xJf - && \
   mv git-${git} .build_git && \
   (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install && cd contrib/completion && cp git-completion.bash git-prompt.sh /opt) && \
@@ -74,14 +74,14 @@ RUN \
 COPY ipagp.ttf /opt/ipagp.ttf
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy pandoc ruby openjdk-8-jre graphviz && \
+  apt-get install --no-install-recommends -qy pandoc ruby openjdk-8-jre graphviz && \
   rm -rf /var/lib/apt/lists/* && \
   gem install -N asciidoctor && \
   gem install -N --pre asciidoctor-pdf && \
   gem install -N coderay && \
   gem install -N asciidoctor-pdf-cjk && \
   gem install -N asciidoctor-diagram && \
-  export asciidoctor_pdf_data_path=$(find /var/lib/gems -maxdepth 3 -name "asciidoctor-pdf-[0-9]*" | fgrep "gems/asciidoctor-pdf")/data && \
+  export asciidoctor_pdf_data_path=$(find /var/lib/gems -maxdepth 3 -name "asciidoctor-pdf-[0-9]*" | grep -F "gems/asciidoctor-pdf")/data && \
   sed -i.bak -e "/^  catalog:/a\    IPA PGothic:\n      normal: ipagp.ttf\n      bold: ipagp.ttf\n      italic: ipagp.ttf\n      bold_italic: ipagp.ttf" \
   -e "s/    - M+ 1p Fallback/    - IPA PGothic/1" ${asciidoctor_pdf_data_path}/themes/default-theme.yml && \
   cp /opt/ipagp.ttf ${asciidoctor_pdf_data_path}/fonts/ipagp.ttf
@@ -98,7 +98,7 @@ ARG UID=1000
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
-  apt-get install -qy language-pack-ja sudo && \
+  apt-get install --no-install-recommends -qy language-pack-ja sudo && \
   rm -rf /var/lib/apt/lists/* && \
   echo "lang en_US" > /etc/aspell.conf && \
   update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
