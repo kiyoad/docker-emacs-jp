@@ -19,8 +19,15 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
-  apt-get install --no-install-recommends -qy tidy shellcheck xmlstarlet libxml2-utils && \
+  apt-get install --no-install-recommends -qy tidy xmlstarlet libxml2-utils && \
   rm -rf /var/lib/apt/lists/*
+
+RUN \
+  wget -q -O - https://storage.googleapis.com/shellcheck/shellcheck-latest.linux.x86_64.tar.xz | tar xJf - && \
+  cp shellcheck-latest/shellcheck /usr/local/bin/shellcheck && \
+  chown root:root /usr/local/bin/shellcheck && \
+  chmod a+x /usr/local/bin/shellcheck && \
+  rm -rf shellcheck-latest
 
 RUN \
   export hadolint=1.5.0 && \
