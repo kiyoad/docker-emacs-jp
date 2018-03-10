@@ -5,7 +5,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   echo "deb-src http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   apt-get update && apt-get upgrade -y && \
-  apt-get install --no-install-recommends -qy gcc make xz-utils wget bsdmainutils ssh && \
+  apt-get install --no-install-recommends -qy gcc make xz-utils wget bsdmainutils ssh ca-certificates && \
   apt-get install --no-install-recommends -qy libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev && \
   apt-get install --no-install-recommends -qy aspell wamerican && \
   apt-get install --no-install-recommends -qy cmigemo exuberant-ctags silversearcher-ag && \
@@ -19,9 +19,25 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
+  apt-get install --no-install-recommends -qy tidy shellcheck xmlstarlet libxml2-utils && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN \
+  export hadolint=1.5.0 && \
+  wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
+  chmod a+x /usr/local/bin/hadolint
+
+RUN DEBIAN_FRONTEND=noninteractive \
+  apt-get update && apt-get upgrade -y && \
   apt-get install --no-install-recommends -qy python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* && \
   pip3 install virtualenv flake8 pygments diff-highlight pylint proselint
+
+RUN DEBIAN_FRONTEND=noninteractive \
+  apt-get update && apt-get upgrade -y && \
+  apt-get install --no-install-recommends -qy ruby2.3-dev && \
+  rm -rf /var/lib/apt/lists/* && \
+  gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
   export node=8.9.4 && \
@@ -34,6 +50,12 @@ RUN \
   npm install --global standard && \
   npm install --global markdownlint && \
   npm install --global markdownlint-cli && \
+  npm install --global csslint && \
+  npm install --global stylelint && \
+  npm install --global jsonlint && \
+  npm install --global less && \
+  npm install --global sass-lint && \
+  npm install --global js-yaml && \
   (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
 
 RUN \
@@ -87,11 +109,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
   cp /opt/ipagp.ttf ${asciidoctor_pdf_data_path}/fonts/ipagp.ttf
 
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
-
-RUN \
-  export hadolint=1.5.0 && \
-  wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
-  chmod a+x /usr/local/bin/hadolint
 
 ARG INSTALL_USER=developer
 ARG UID=1000
