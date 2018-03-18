@@ -7,7 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
   apt-get install --no-install-recommends -qy gcc make xz-utils wget bsdmainutils ssh ca-certificates && \
   apt-get install --no-install-recommends -qy libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev && \
-  apt-get install --no-install-recommends -qy aspell wamerican && \
+  apt-get install --no-install-recommends -qy aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -qy cmigemo exuberant-ctags silversearcher-ag && \
   apt-get install --no-install-recommends -qy fonts-takao fonts-takao-gothic fonts-takao-mincho fonts-takao-pgothic && \
   apt-get install --no-install-recommends -qy sdic sdic-edict sdic-gene95 && \
