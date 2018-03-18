@@ -30,7 +30,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  export hadolint=1.5.0 && \
+  export hadolint=1.5.1 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -47,7 +47,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
-  export node=8.9.4 && \
+  export node=8.10.0 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
