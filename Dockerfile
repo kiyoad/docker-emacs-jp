@@ -38,6 +38,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
   apt-get install --no-install-recommends -qy python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* && \
+  pip3 install wheel && \
   pip3 install virtualenv flake8 pygments diff-highlight pylint proselint
 
 RUN DEBIAN_FRONTEND=noninteractive \
