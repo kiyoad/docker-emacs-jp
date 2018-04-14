@@ -123,7 +123,7 @@ ARG UID=1000
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get upgrade -y && \
-  apt-get install --no-install-recommends -qy language-pack-ja sudo && \
+  apt-get install --no-install-recommends -qy language-pack-ja tzdata sudo && \
   rm -rf /var/lib/apt/lists/* && \
   echo "lang en_US" > /etc/aspell.conf && \
   update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
