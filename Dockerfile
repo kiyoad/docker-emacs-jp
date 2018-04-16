@@ -64,6 +64,11 @@ RUN \
   npm install --global less && \
   npm install --global sass-lint && \
   npm install --global js-yaml && \
+  npm install --global textlint && \
+  npm install --global textlint-rule-prh && \
+  npm install --global textlint-rule-spellcheck-tech-word && \
+  npm install --global textlint-rule-preset-ja-technical-writing && \
+  npm install --global textlint-filter-rule-comments && \
   (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
 
 RUN \
