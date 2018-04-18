@@ -52,23 +52,23 @@ RUN \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
-  npm install --global handlebars && \
-  npm install --global eslint && \
-  npm install --global jshint && \
-  npm install --global standard && \
-  npm install --global markdownlint && \
-  npm install --global markdownlint-cli && \
-  npm install --global csslint && \
-  npm install --global stylelint && \
-  npm install --global jsonlint && \
-  npm install --global less && \
-  npm install --global sass-lint && \
-  npm install --global js-yaml && \
-  npm install --global textlint && \
-  npm install --global textlint-rule-prh && \
-  npm install --global textlint-rule-spellcheck-tech-word && \
-  npm install --global textlint-rule-preset-ja-technical-writing && \
-  npm install --global textlint-filter-rule-comments && \
+  npm install -g --production handlebars && \
+  npm install -g --production eslint && \
+  npm install -g --production jshint && \
+  npm install -g --production standard && \
+  npm install -g --production markdownlint && \
+  npm install -g --production markdownlint-cli && \
+  npm install -g --production csslint && \
+  npm install -g --production stylelint && \
+  npm install -g --production jsonlint && \
+  npm install -g --production less && \
+  npm install -g --production sass-lint && \
+  npm install -g --production js-yaml && \
+  npm install -g --production textlint && \
+  npm install -g --production textlint-rule-prh && \
+  npm install -g --production textlint-rule-spellcheck-tech-word && \
+  npm install -g --production textlint-rule-preset-ja-technical-writing && \
+  npm install -g --production textlint-filter-rule-comments && \
   (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
 
 RUN \
