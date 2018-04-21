@@ -142,5 +142,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" SHELL=/bin/bash TERM=xterm-256color
 
 USER ${INSTALL_USER}
+RUN mkdir "/tmp/emacs${UID}" && chmod 0700 "/tmp/emacs${UID}"
+
 WORKDIR /home/${INSTALL_USER}
 ENTRYPOINT [ "/usr/local/bin/emacs" ]
