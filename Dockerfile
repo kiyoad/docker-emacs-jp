@@ -9,7 +9,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev && \
   apt-get install --no-install-recommends -q -y aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -q -y cmigemo exuberant-ctags silversearcher-ag && \
-  apt-get install --no-install-recommends -q -y fonts-takao fonts-takao-gothic fonts-takao-mincho fonts-takao-pgothic && \
+  apt-get install --no-install-recommends -q -y fonts-ipafont && \
   apt-get install --no-install-recommends -q -y sdic sdic-edict sdic-gene95 && \
   wget -q -O - http://ftpmirror.gnu.org/emacs/emacs-${emacs}.tar.xz | tar xJf - && \
   mv emacs-${emacs} .build_emacs && \
@@ -105,8 +105,6 @@ RUN \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
   (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;)
 
-# https://ipafont.ipa.go.jp/old/ipafont/download.html
-COPY ipagp.ttf /opt/ipagp.ttf
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && \
   apt-get install --no-install-recommends -q -y pandoc ruby openjdk-8-jre graphviz && \
@@ -119,7 +117,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   asciidoctor_pdf_data_path=$(find /var/lib/gems -maxdepth 3 -name "asciidoctor-pdf-[0-9]*" | grep -F "gems/asciidoctor-pdf")/data && \
   sed -i.bak -e "/^  catalog:/a\\    IPA PGothic:\\n      normal: ipagp.ttf\\n      bold: ipagp.ttf\\n      italic: ipagp.ttf\\n      bold_italic: ipagp.ttf" \
   -e "s/    - M+ 1p Fallback/    - IPA PGothic/1" "${asciidoctor_pdf_data_path}/themes/default-theme.yml" && \
-  cp /opt/ipagp.ttf "${asciidoctor_pdf_data_path}/fonts/ipagp.ttf"
+  ln /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf "${asciidoctor_pdf_data_path}/fonts/ipagp.ttf"
 
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 

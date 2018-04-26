@@ -31,14 +31,10 @@ Server:
   Experimental: false
 ```
 
-* IPA Fonts(https://ipafont.ipa.go.jp/old/ipafont/download.html)
-    * IPA P Gothic(Sans serif) ipagp.ttf
-
 ### Installing
 
 1. Temporarily set `/proc/sys/kernel/randomize_va_space` to 0.
     * `$ sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space"`
-1. Get IPA P Gothic font and store `ipagp.ttf` in the same directory as `Dockerfile`.
 1. Run `docker_build.sh` and wait a while.
     * `$ ./docker_build.sh`
 1. Successful if the log on the screen ends with the following.
