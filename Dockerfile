@@ -139,6 +139,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" SHELL=/bin/bash TERM=xterm-256color
 
+RUN mkdir /tmp/.X11-unix && chmod a+rwxt /tmp/.X11-unix
 USER ${INSTALL_USER}
 RUN mkdir "/tmp/emacs${UID}" && chmod 0700 "/tmp/emacs${UID}"
 
