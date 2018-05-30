@@ -1,7 +1,8 @@
 FROM ubuntu:xenial
 
-RUN DEBIAN_FRONTEND=noninteractive \
+RUN \
   : version && emacs=25.3 && \
+  export DEBIAN_FRONTEND=noninteractive && \
   echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   echo "deb-src http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   apt-get update && \
@@ -9,7 +10,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev && \
   apt-get install --no-install-recommends -q -y aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -q -y cmigemo exuberant-ctags silversearcher-ag && \
-  apt-get install --no-install-recommends -q -y fonts-ipafont && \
   apt-get install --no-install-recommends -q -y sdic sdic-edict sdic-gene95 && \
   wget -q -O - http://ftpmirror.gnu.org/emacs/emacs-${emacs}.tar.xz | tar xJf - && \
   mv emacs-${emacs} .build_emacs && \
@@ -17,7 +17,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
   rm -rf .build_emacs && \
   rm -rf /var/lib/apt/lists/*
 
-RUN DEBIAN_FRONTEND=noninteractive \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y tidy xmlstarlet libxml2-utils && \
   rm -rf /var/lib/apt/lists/*
@@ -30,25 +31,27 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.6.2 && \
+  : version && hadolint=1.6.5 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
-RUN DEBIAN_FRONTEND=noninteractive \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* && \
   pip3 install wheel && \
   pip3 install virtualenv flake8 pygments diff-highlight pylint proselint
 
-RUN DEBIAN_FRONTEND=noninteractive \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y ruby2.3-dev && \
   rm -rf /var/lib/apt/lists/* && \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
-  : version && node=8.11.1 && \
+  : version && node=8.11.2 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -79,8 +82,9 @@ RUN \
   cp /usr/local/share/gtags/gtags.conf /etc/gtags.conf && \
   rm -rf .build_global
 
-RUN DEBIAN_FRONTEND=noninteractive \
-  : version && git=2.17.0 && \
+RUN \
+  : version && git=2.17.1 && \
+  export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gettext && \
   apt-get install --no-install-recommends -q -y libssl-dev libcurl4-openssl-dev libexpat1-dev && \
@@ -92,7 +96,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.10.1 && \
+  : version && golang=1.10.2 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
@@ -105,9 +109,10 @@ RUN \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
   (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;)
 
-RUN DEBIAN_FRONTEND=noninteractive \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y pandoc ruby openjdk-8-jre graphviz && \
+  apt-get install --no-install-recommends -q -y pandoc ruby openjdk-8-jre graphviz fonts-ipafont && \
   rm -rf /var/lib/apt/lists/* && \
   gem install -N asciidoctor && \
   gem install -N --pre asciidoctor-pdf && \
@@ -124,7 +129,8 @@ COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 ARG INSTALL_USER=developer
 ARG UID=1000
 
-RUN DEBIAN_FRONTEND=noninteractive \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo whois && \
   rm -rf /var/lib/apt/lists/* && \
