@@ -138,7 +138,7 @@ RUN \
   update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
   cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
   echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata && \
-  useradd -u "${UID}" -p $(echo "${INSTALL_USER}" | mkpasswd -s -m sha-512) -m "${INSTALL_USER}" && \
+  useradd -u "${UID}" -p $(echo "${INSTALL_USER}" | mkpasswd -s -m sha-512) -m -s /bin/bash "${INSTALL_USER}" && \
   chown -R "${INSTALL_USER}":"${INSTALL_USER}" "/home/${INSTALL_USER}" && \
   echo "${INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${INSTALL_USER}" && \
   chmod 0440 "/etc/sudoers.d/${INSTALL_USER}"
