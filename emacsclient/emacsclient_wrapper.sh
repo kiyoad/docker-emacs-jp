@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eu
 cwd=$1
 shift
 cd "${cwd}"

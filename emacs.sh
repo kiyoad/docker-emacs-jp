@@ -1,6 +1,6 @@
 #!/bin/bash
-set -euo pipefail
-socketfilepath="/tmp/emacs$(id -u)"
-mkdir -p "${socketfilepath}"
-chmod 0700 "${socketfilepath}"
-docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v "${socketfilepath}:${socketfilepath}" -v "${HOME}:/home/${LOGNAME}" --detach-keys="ctrl-u,ctrl-q" kiyoad/emacs "$@"
+set -eu
+emacs_socket="/tmp/emacs$(id -u)"
+mkdir -p "${emacs_socket}"
+chmod 0700 "${emacs_socket}"
+docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v "${emacs_socket}:${emacs_socket}" -v "${HOME}:/home/${LOGNAME}" --detach-keys="ctrl-u,ctrl-q" kiyoad/emacs "${LOGNAME}" "$(id -u)" "$@"

@@ -1,6 +1,16 @@
 FROM ubuntu:xenial
 
 RUN \
+apt-get update && \
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo && \
+rm -rf /var/lib/apt/lists/* && \
+update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
+cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+
+ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+
+RUN \
   : version && emacs=26.1 && \
   export DEBIAN_FRONTEND=noninteractive && \
   echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
@@ -126,28 +136,7 @@ RUN \
 
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 
-ARG INSTALL_USER=developer
-ARG UID=1000
-
-RUN \
-  export DEBIAN_FRONTEND=noninteractive && \
-  apt-get update && \
-  apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo whois && \
-  rm -rf /var/lib/apt/lists/* && \
-  echo "lang en_US" > /etc/aspell.conf && \
-  update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
-  cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
-  echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata && \
-  useradd -u "${UID}" -p $(echo "${INSTALL_USER}" | mkpasswd -s -m sha-512) -m -s /bin/bash "${INSTALL_USER}" && \
-  chown -R "${INSTALL_USER}":"${INSTALL_USER}" "/home/${INSTALL_USER}" && \
-  echo "${INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${INSTALL_USER}" && \
-  chmod 0440 "/etc/sudoers.d/${INSTALL_USER}"
-
-ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" SHELL=/bin/bash TERM=xterm-256color
-
 RUN mkdir /tmp/.X11-unix && chmod a+rwxt /tmp/.X11-unix
-USER ${INSTALL_USER}
-RUN mkdir "/tmp/emacs${UID}" && chmod 0700 "/tmp/emacs${UID}"
 
-WORKDIR /home/${INSTALL_USER}
-ENTRYPOINT [ "/usr/local/bin/emacs" ]
+COPY bootstrap.sh /usr/local/sbin/
+ENTRYPOINT [ "/usr/local/sbin/bootstrap.sh" ]

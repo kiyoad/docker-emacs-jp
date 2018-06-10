@@ -1,17 +1,12 @@
 FROM ubuntu:xenial
 
-ARG INSTALL_USER=developer
-ARG UID=1000
-
 RUN \
-  adduser --disabled-password --gecos "Developer" --uid "${UID}" "${INSTALL_USER}" && \
-  chown -R "${INSTALL_USER}":"${INSTALL_USER}" "/home/${INSTALL_USER}"
+apt-get update && \
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -q -y sudo && \
+rm -rf /var/lib/apt/lists/* 
 
-COPY emacsclient /usr/local/bin/emacsclient
-COPY startup.sh /usr/local/bin/startup.sh
+COPY emacsclient /usr/local/bin/
+COPY emacsclient_wrapper.sh /usr/local/bin/
+COPY bootstrap.sh /usr/local/sbin/
 
-USER ${INSTALL_USER}
-RUN mkdir "/tmp/emacs${UID}" && chmod 0700 "/tmp/emacs${UID}"
-
-WORKDIR /home/${INSTALL_USER}
-ENTRYPOINT [ "/usr/local/bin/startup.sh" ]
+ENTRYPOINT [ "/usr/local/sbin/bootstrap.sh" ]
