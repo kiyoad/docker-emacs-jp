@@ -31,7 +31,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.6.5 && \
+  : version && hadolint=1.7.1 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -62,7 +62,7 @@ RUN \
   npm install -g --production markdownlint && \
   npm install -g --production markdownlint-cli && \
   npm install -g --production csslint && \
-  npm install -g --production stylelint && \
+  npm install -g --production postcss-syntax@^0.10.0 postcss stylelint && \
   npm install -g --production jsonlint && \
   npm install -g --production less && \
   npm install -g --production sass-lint && \
@@ -96,7 +96,7 @@ RUN \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.10.2 && \
+  : version && golang=1.10.3 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
