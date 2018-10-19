@@ -41,7 +41,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.7.1 && \
+  : version && hadolint=1.13.0 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -61,7 +61,7 @@ RUN \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
-  : version && node=8.11.2 && \
+  : version && node=8.12.0 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -93,7 +93,7 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && git=2.17.1 && \
+  : version && git=2.19.1 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gettext && \
@@ -106,7 +106,7 @@ RUN \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.10.3 && \
+  : version && golang=1.11.1 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
