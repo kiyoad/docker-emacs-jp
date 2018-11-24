@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 RUN \
 apt-get update && \
@@ -13,11 +13,9 @@ ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 RUN \
   : version && emacs=26.1 && \
   export DEBIAN_FRONTEND=noninteractive && \
-  echo "deb http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
-  echo "deb-src http://ftp.riken.jp/Linux/ubuntu/ xenial main multiverse" >> /etc/apt/sources.list && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates && \
-  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng12-dev libtiff5-dev libxml2-dev librsvg2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev libgnutls-dev libmagickwand-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev && \
+  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev && \
   apt-get install --no-install-recommends -q -y aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -q -y cmigemo exuberant-ctags silversearcher-ag && \
   apt-get install --no-install-recommends -q -y sdic sdic-edict sdic-gene95 && \
@@ -41,7 +39,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.13.0 && \
+  : version && hadolint=1.15.0 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -56,12 +54,12 @@ RUN \
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y ruby2.3-dev && \
+  apt-get install --no-install-recommends -q -y ruby2.5-dev && \
   rm -rf /var/lib/apt/lists/* && \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
-  : version && node=8.12.0 && \
+  : version && node=10.13.0 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -93,7 +91,7 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && git=2.19.1 && \
+  : version && git=2.19.2 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gettext && \
@@ -106,7 +104,7 @@ RUN \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.11.1 && \
+  : version && golang=1.11.2 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
