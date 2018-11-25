@@ -134,6 +134,12 @@ RUN \
 
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 
+RUN \
+  git clone https://github.com/edihbrandon/RictyDiminished.git && \
+  mv RictyDiminished/*.ttf /usr/local/share/fonts/ && \
+  rm -rf RictyDiminished && \
+  fc-cache -fv
+
 RUN mkdir /tmp/.X11-unix && chmod a+rwxt /tmp/.X11-unix
 
 COPY bootstrap.sh /usr/local/sbin/
