@@ -49,7 +49,7 @@ RUN \
   apt-get install --no-install-recommends -q -y python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* && \
   pip3 install wheel && \
-  pip3 install virtualenv flake8 pygments diff-highlight pylint proselint
+  pip3 install virtualenv flake8 pygments diff-highlight pylint proselint 'python-language-server[all]'
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
@@ -59,7 +59,7 @@ RUN \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
-  : version && node=10.13.0 && \
+  : version && node=10.15.0 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -80,10 +80,13 @@ RUN \
   npm install -g --production textlint-rule-spellcheck-tech-word && \
   npm install -g --production textlint-rule-preset-ja-technical-writing && \
   npm install -g --production textlint-filter-rule-comments && \
+  npm install -g --production vscode-css-languageserver-bin && \
+  npm install -g --production vscode-html-languageserver-bin && \
+  npm install -g --production javascript-typescript-langserver && \
   (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
 
 RUN \
-  : version && global=6.6.2 && \
+  : version && global=6.6.3 && \
   wget -q -O - http://ftpmirror.gnu.org/global/global-${global}.tar.gz | tar zxf - && \
   mv global-${global} .build_global && \
   (cd .build_global && PYTHON=/usr/bin/python3 ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
@@ -91,7 +94,7 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && git=2.19.2 && \
+  : version && git=2.20.1 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gettext && \
@@ -104,16 +107,13 @@ RUN \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.11.2 && \
+  : version && golang=1.11.4 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
-  go get -u github.com/rogpeppe/godef && \
-  go get -u github.com/nsf/gocode && \
-  go get -u github.com/dougm/goflymake && \
+  go get -u golang.org/x/tools/cmd/goimports && \
   go get -u github.com/jstemmer/gotags && \
-  go get -u github.com/alecthomas/gometalinter && \
-  /opt/go/bin/gometalinter --install && \
+  go get -u github.com/sourcegraph/go-langserver && \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
   (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;)
 
