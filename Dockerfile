@@ -2,7 +2,8 @@ FROM ubuntu:bionic
 
 RUN \
 apt-get update && \
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo && \
+yes | unminimize && \
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo man-db manpages manpages-dev && \
 rm -rf /var/lib/apt/lists/* && \
 update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
 cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
@@ -83,6 +84,7 @@ RUN \
   npm install -g --production vscode-css-languageserver-bin && \
   npm install -g --production vscode-html-languageserver-bin && \
   npm install -g --production javascript-typescript-langserver && \
+  npm install --unsafe-perm -g --production bash-language-server && \
   (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
 
 RUN \
