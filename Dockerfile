@@ -143,7 +143,5 @@ RUN \
   rm -rf RictyDiminished && \
   fc-cache -fv
 
-RUN mkdir /tmp/.X11-unix && chmod a+rwxt /tmp/.X11-unix
-
 COPY bootstrap.sh /usr/local/sbin/
 ENTRYPOINT [ "/usr/local/sbin/bootstrap.sh" ]
