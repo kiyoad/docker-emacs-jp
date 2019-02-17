@@ -97,16 +97,12 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && git=2.20.1 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y gettext && \
-  apt-get install --no-install-recommends -q -y libssl-dev libcurl4-openssl-dev libexpat1-dev && \
-  wget -q -O - https://www.kernel.org/pub/software/scm/git/git-${git}.tar.xz | tar xJf - && \
-  mv git-${git} .build_git && \
-  (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install && cd contrib/completion && cp git-completion.bash git-prompt.sh /opt) && \
-  rm -rf .build_git && \
-  rm -rf /var/lib/apt/lists/* /tmp/*
+  apt-get install -q -y git && \
+  rm -rf /var/lib/apt/lists/* /tmp/* && \
+  wget -q -O /opt/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && \
+  wget -q -O /opt/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 ENV GOPATH /opt/go
 RUN \
