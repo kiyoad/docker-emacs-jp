@@ -4,7 +4,7 @@ RUN \
 apt-get update && \
 yes | unminimize && \
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo man-db manpages manpages-dev && \
-rm -rf /var/lib/apt/lists/* && \
+rm -rf /var/lib/apt/lists/* /tmp/* && \
 update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
 cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
 echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
@@ -24,13 +24,13 @@ RUN \
   mv emacs-${emacs} .build_emacs && \
   (cd .build_emacs && ./configure && make install) && \
   rm -rf .build_emacs && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y tidy xmlstarlet libxml2-utils && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN \
   wget -q -O - https://storage.googleapis.com/shellcheck/shellcheck-latest.linux.x86_64.tar.xz | tar xJf - && \
@@ -48,7 +48,7 @@ RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y python3-pip python3-setuptools && \
-  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/lib/apt/lists/* /tmp/* && \
   ln -s /usr/bin/python3 /usr/bin/python && \
   pip3 install wheel && \
   pip3 install virtualenv flake8 pygments diff-highlight pylint proselint 'python-language-server[all]'
@@ -57,7 +57,7 @@ RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y ruby2.5-dev && \
-  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/lib/apt/lists/* /tmp/* && \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
@@ -106,7 +106,7 @@ RUN \
   mv git-${git} .build_git && \
   (cd .build_git && make prefix=/usr/local NO_TCLTK=NoThanks install && cd contrib/completion && cp git-completion.bash git-prompt.sh /opt) && \
   rm -rf .build_git && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* /tmp/*
 
 ENV GOPATH /opt/go
 RUN \
@@ -124,7 +124,7 @@ RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y pandoc ruby openjdk-8-jre graphviz fonts-ipafont && \
-  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/lib/apt/lists/* /tmp/* && \
   gem install -N asciidoctor && \
   gem install -N --pre asciidoctor-pdf && \
   gem install -N coderay && \
