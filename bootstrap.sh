@@ -11,5 +11,6 @@ echo "${logname} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${logname}"
 chmod 0440 "/etc/sudoers.d/${logname}"
 
 export TERM=xterm-256color
-
-sudo -i -u "${logname}" /usr/local/bin/emacs "$@"
+sudo chown "${logname}:${logname}" "/tmp/emacs${uid}"
+sudo chmod go-rwx "/tmp/emacs${uid}"
+sudo -u "${logname}" -i /usr/local/bin/emacs "$@"
