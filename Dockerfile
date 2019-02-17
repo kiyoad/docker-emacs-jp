@@ -49,6 +49,7 @@ RUN \
   apt-get update && \
   apt-get install --no-install-recommends -q -y python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* && \
+  ln -s /usr/bin/python3 /usr/bin/python && \
   pip3 install wheel && \
   pip3 install virtualenv flake8 pygments diff-highlight pylint proselint 'python-language-server[all]'
 
