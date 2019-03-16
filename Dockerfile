@@ -61,7 +61,7 @@ RUN \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
 
 RUN \
-  : version && node=10.15.1 && \
+  : version && node=10.15.3 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -106,7 +106,7 @@ RUN \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.11.5 && \
+  : version && golang=1.12.1 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
