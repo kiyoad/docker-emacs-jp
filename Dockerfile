@@ -15,7 +15,7 @@ RUN \
   : version && emacs=26.1 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates && \
+  apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates fonts-ricty-diminished && \
   apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev librsvg2-dev && \
   apt-get install --no-install-recommends -q -y aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -q -y cmigemo exuberant-ctags silversearcher-ag && \
@@ -132,12 +132,6 @@ RUN \
   ln /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf "${asciidoctor_pdf_data_path}/fonts/ipagp.ttf"
 
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
-
-RUN \
-  git clone https://github.com/edihbrandon/RictyDiminished.git && \
-  mv RictyDiminished/*.ttf /usr/local/share/fonts/ && \
-  rm -rf RictyDiminished && \
-  fc-cache -fv
 
 COPY bootstrap.sh /usr/local/sbin/
 ENTRYPOINT [ "/usr/local/sbin/bootstrap.sh" ]
