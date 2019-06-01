@@ -37,6 +37,15 @@ RUN \
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
+  apt-get install -q -y g++ clang-7 cmake libclang-7-dev && \
+  git clone --depth=1 --recursive https://github.com/MaskRay/ccls && \
+  (cd ccls && cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/lib/llvm-7/lib/cmake/clang -DCLANG_EXECUTABLE:FILEPATH=/usr/bin/clang-7 && cmake --build Release --target install) && \
+  rm -rf ccls && \
+  rm -rf /var/lib/apt/lists/* /tmp/*
+
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
+  apt-get update && \
   apt-get install --no-install-recommends -q -y tidy xmlstarlet libxml2-utils && \
   rm -rf /var/lib/apt/lists/* /tmp/*
 
@@ -57,7 +66,6 @@ RUN \
   apt-get update && \
   apt-get install --no-install-recommends -q -y python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
-  ln -s /usr/bin/python3 /usr/bin/python && \
   pip3 install wheel && \
   pip3 install virtualenv flake8 pygments diff-highlight pylint proselint 'python-language-server[all]'
 
