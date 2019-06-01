@@ -29,6 +29,14 @@ RUN \
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
+  apt-get install -q -y git && \
+  rm -rf /var/lib/apt/lists/* /tmp/* && \
+  wget -q -O /opt/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && \
+  wget -q -O /opt/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
+  apt-get update && \
   apt-get install --no-install-recommends -q -y tidy xmlstarlet libxml2-utils && \
   rm -rf /var/lib/apt/lists/* /tmp/*
 
@@ -95,14 +103,6 @@ RUN \
   (cd .build_global && PYTHON=/usr/bin/python3 ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
   cp /usr/local/share/gtags/gtags.conf /etc/gtags.conf && \
   rm -rf .build_global
-
-RUN \
-  export DEBIAN_FRONTEND=noninteractive && \
-  apt-get update && \
-  apt-get install -q -y git && \
-  rm -rf /var/lib/apt/lists/* /tmp/* && \
-  wget -q -O /opt/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && \
-  wget -q -O /opt/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 ENV GOPATH /opt/go
 RUN \
