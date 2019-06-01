@@ -12,11 +12,11 @@ echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive 
 ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
 RUN \
-  : version && emacs=26.1 && \
+  : version && emacs=26.2 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates fonts-ricty-diminished && \
-  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev librsvg2-dev && \
+  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev librsvg2-dev libgtk-3-dev && \
   apt-get install --no-install-recommends -q -y aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -q -y cmigemo exuberant-ctags silversearcher-ag && \
   apt-get install --no-install-recommends -q -y sdic sdic-edict sdic-gene95 && \
