@@ -64,10 +64,10 @@ RUN \
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y python3-pip python3-setuptools && \
+  apt-get install --no-install-recommends -q -y python-pip python-setuptools && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
-  pip3 install wheel && \
-  pip3 install virtualenv flake8 pygments diff-highlight pylint proselint 'python-language-server[all]'
+  pip install wheel && \
+  pip install virtualenv flake8 pygments diff-highlight pylint proselint 'python-language-server[all]'
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
