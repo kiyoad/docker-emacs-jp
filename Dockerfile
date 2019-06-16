@@ -142,7 +142,8 @@ RUN \
   asciidoctor_pdf_data_path=$(find /var/lib/gems -maxdepth 3 -name "asciidoctor-pdf-[0-9]*" | grep -F "gems/asciidoctor-pdf")/data && \
   sed -i.bak -e "/^  catalog:/a\\    IPA PGothic:\\n      normal: ipagp.ttf\\n      bold: ipagp.ttf\\n      italic: ipagp.ttf\\n      bold_italic: ipagp.ttf" \
   -e "s/    - M+ 1p Fallback/    - IPA PGothic/1" "${asciidoctor_pdf_data_path}/themes/default-theme.yml" && \
-  ln /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf "${asciidoctor_pdf_data_path}/fonts/ipagp.ttf"
+  ln /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf "${asciidoctor_pdf_data_path}/fonts/ipagp.ttf" && \
+  rm -rf /root/.gem
 
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 
