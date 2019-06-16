@@ -103,9 +103,12 @@ RUN \
   npm install -g --production textlint-filter-rule-comments && \
   npm install -g --production vscode-css-languageserver-bin && \
   npm install -g --production vscode-html-languageserver-bin && \
-  npm install -g --production javascript-typescript-langserver && \
+  npm install -g --production typescript-language-server && \
+  npm install -g --production typescript && \
+  npm install -g --production intelephense && \
   npm install --unsafe-perm -g --production bash-language-server && \
-  (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;)
+  (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;) && \
+  rm -rf /root/.npm /root/.config
 
 RUN \
   : version && global=6.6.3 && \
