@@ -124,11 +124,10 @@ RUN \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
-  go get -u golang.org/x/tools/cmd/goimports && \
-  go get -u github.com/jstemmer/gotags && \
-  go get -u github.com/sourcegraph/go-langserver && \
+  go get -u golang.org/x/tools/cmd/gopls && \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
-  (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;)
+  (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;) && \
+  rm -rf /root/.cache
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
