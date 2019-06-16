@@ -120,7 +120,7 @@ RUN \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.12.5 && \
+  : version && golang=1.12.6 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
