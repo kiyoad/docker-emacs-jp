@@ -76,7 +76,8 @@ RUN \
   apt-get update && \
   apt-get install --no-install-recommends -q -y ruby2.5-dev && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
-  gem install -N mdl rubocop reek ruby-lint sqlint scss_lint
+  gem install -N mdl rubocop reek ruby-lint sqlint scss_lint solargraph && \
+  rm -rf /root/.gem
 
 RUN \
   : version && node=10.16.0 && \
