@@ -39,7 +39,7 @@ RUN \
   apt-get update && \
   apt-get install -q -y g++ clang-7 cmake libclang-7-dev && \
   git clone --depth=1 --recursive https://github.com/MaskRay/ccls && \
-  (cd ccls && cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/lib/llvm-7/lib/cmake/clang -DCLANG_EXECUTABLE:FILEPATH=/usr/bin/clang-7 && cmake --build Release --target install) && \
+  (cd ccls && cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/lib/llvm-7 -DLLVM_INCLUDE_DIR=/usr/lib/llvm-7/include -DLLVM_BUILD_INCLUDE_DIR=/usr/include/llvm-7 && cmake --build Release --target install) && \
   rm -rf ccls && \
   rm -rf /var/lib/apt/lists/* /tmp/*
 
