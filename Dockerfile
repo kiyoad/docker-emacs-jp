@@ -13,7 +13,7 @@ ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
-  : version && emacs=26.2 && \
+  : version && emacs=26.3 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates fonts-ricty-diminished && \
@@ -58,7 +58,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.16.3 && \
+  : version && hadolint=1.17.2 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -81,7 +81,7 @@ RUN \
   rm -rf /root/.gem
 
 RUN \
-  : version && node=10.16.0 && \
+  : version && node=10.16.3 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -121,7 +121,7 @@ RUN \
 
 ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.12.6 && \
+  : version && golang=1.13 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
