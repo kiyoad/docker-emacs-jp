@@ -11,6 +11,7 @@ echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive 
 
 ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   : version && emacs=26.2 && \
   export DEBIAN_FRONTEND=noninteractive && \
