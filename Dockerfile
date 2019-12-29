@@ -58,14 +58,14 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.17.2 && \
+  : version && hadolint=1.17.3 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y python-pip python-setuptools python3-pip python3-setuptools && \
+  apt-get install --no-install-recommends -q -y python-pip python-setuptools python3-pip python3-setuptools libpython3.6-dev && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
   pip install pygments && \
   pip3 install wheel && \
@@ -81,7 +81,7 @@ RUN \
   rm -rf /root/.gem
 
 RUN \
-  : version && node=10.16.3 && \
+  : version && node=12.14.0 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -112,20 +112,20 @@ RUN \
   rm -rf /root/.npm /root/.config
 
 RUN \
-  : version && global=6.6.3 && \
+  : version && global=6.6.4 && \
   wget -q -O - http://ftpmirror.gnu.org/global/global-${global}.tar.gz | tar zxf - && \
   mv global-${global} .build_global && \
   (cd .build_global && PYTHON=/usr/bin/python3 ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
   cp /usr/local/share/gtags/gtags.conf /etc/gtags.conf && \
   rm -rf .build_global
 
-ENV GOPATH /opt/go
 RUN \
-  : version && golang=1.13 && \
+  : version && golang=1.13.5 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
+  export GOPATH=/opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
-  go get -u golang.org/x/tools/cmd/gopls && \
+  GO111MODULE=on go get golang.org/x/tools/gopls@latest && \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
   (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;) && \
   rm -rf /root/.cache
