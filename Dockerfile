@@ -99,6 +99,9 @@ RUN \
   npm install -g --production typescript && \
   npm install -g --production intelephense && \
   npm install --unsafe-perm -g --production bash-language-server && \
+  npm install -g --production dockerfile-language-server-nodejs && \
+  npm install -g --production vscode-json-languageserver && \
+  npm install -g --production yaml-language-server && \
   (cd /usr/local/node-v${node}-linux-x64 && find bin -xtype f -exec ln -s /usr/local/node-v${node}-linux-x64/{} /usr/local/{} \;) && \
   rm -rf /root/.npm /root/.config
 
