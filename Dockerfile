@@ -30,7 +30,7 @@ RUN \
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install -q -y git clang-tools-8 && \
+  apt-get install -q -y git clang-tools-8 g++ && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
   wget -q -O /opt/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && \
   wget -q -O /opt/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
