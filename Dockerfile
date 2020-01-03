@@ -30,10 +30,19 @@ RUN \
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install -q -y git clang-tools-8 g++ && \
+  apt-get install -q -y git && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
   wget -q -O /opt/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && \
   wget -q -O /opt/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
+  apt-get update && \
+  apt-get install -q -y cmake g++ clang-tools-8 libclang-8-dev zlib1g-dev libncurses-dev && \
+  git clone --depth=1 --recursive https://github.com/MaskRay/ccls && \
+  (cd ccls && cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/lib/llvm-8 -DLLVM_INCLUDE_DIR=/usr/lib/llvm-8/include && cmake --build Release --target install) && \
+  rm -rf ccls && \
+  rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
