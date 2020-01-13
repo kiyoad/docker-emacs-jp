@@ -64,7 +64,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.17.3 && \
+  : version && hadolint=1.17.4 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -87,7 +87,7 @@ RUN \
   rm -rf /root/.gem
 
 RUN \
-  : version && node=12.14.0 && \
+  : version && node=12.14.1 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -129,7 +129,7 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && golang=1.13.5 && \
+  : version && golang=1.13.6 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export GOPATH=/opt/go && \
