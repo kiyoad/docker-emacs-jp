@@ -23,13 +23,13 @@ RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ca-certificates fonts-ricty-diminished man-db manpages manpages-dev && \
-  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev librsvg2-dev libgtk-3-dev && \
+  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev librsvg2-dev libgtk-3-dev libwebkit2gtk-4.0-dev && \
   apt-get install --no-install-recommends -q -y aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -q -y cmigemo exuberant-ctags silversearcher-ag && \
   apt-get install --no-install-recommends -q -y sdic sdic-edict sdic-gene95 && \
   wget -q -O - http://ftpmirror.gnu.org/emacs/emacs-${emacs}.tar.xz | tar xJf - && \
   mv emacs-${emacs} .build_emacs && \
-  (cd .build_emacs && ./configure --with-x-toolkit=gtk3 && make install) && \
+  (cd .build_emacs && ./configure --with-x-toolkit=gtk3 --with-xwidgets && make install) && \
   rm -rf .build_emacs && \
   rm -rf /var/lib/apt/lists/* /tmp/*
 
