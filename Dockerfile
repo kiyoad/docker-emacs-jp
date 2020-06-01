@@ -14,7 +14,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -q -y supervisor xvfb x11vnc xrdp uim-anthy fonts-ipafont fonts-ricty-diminished ubuntu-mate-core && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -q -y supervisor xvfb x11vnc xrdp uim-anthy fonts-ipafont fonts-ricty-diminished ubuntu-mate-core wireshark && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
   mkdir -p /tmp/.X11-unix && chmod a+rwxt /tmp/.X11-unix
 
