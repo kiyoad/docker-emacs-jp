@@ -1,35 +1,29 @@
 FROM ubuntu:bionic
 
 RUN \
-  apt-get update && \
-  yes | unminimize && \
-  DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo whois ssh && \
-  rm -rf /var/lib/apt/lists/* /tmp/* && \
-  update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
-  cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
-  echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+apt-get update && \
+yes | unminimize && \
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -q -y language-pack-ja tzdata sudo man-db manpages manpages-dev && \
+rm -rf /var/lib/apt/lists/* /tmp/* && \
+update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" && \
+cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+echo "Asia/Tokyo" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
 ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-RUN \
-  apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -q -y supervisor xvfb x11vnc xrdp uim-anthy fonts-ipafont fonts-ricty-diminished ubuntu-mate-core wireshark && \
-  rm -rf /var/lib/apt/lists/* /tmp/* && \
-  mkdir -p /tmp/.X11-unix && chmod a+rwxt /tmp/.X11-unix
-
 RUN \
   : version && emacs=26.3 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ca-certificates fonts-ricty-diminished man-db manpages manpages-dev && \
-  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev librsvg2-dev libgtk-3-dev libwebkit2gtk-4.0-dev && \
+  apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates fonts-ricty-diminished && \
+  apt-get install --no-install-recommends -q -y libtinfo-dev libx11-dev libxaw7-dev libgif-dev libjpeg-turbo8-dev libpng-dev libtiff5-dev libxml2-dev libxft-dev libxpm-dev libgpm-dev libsm-dev libice-dev libxrandr-dev libxinerama-dev xaw3dg-dev libdbus-1-dev libgconf2-dev libotf-dev libm17n-dev libncurses5-dev libacl1-dev libselinux1-dev libsystemd-dev libgnutls28-dev liblcms2-dev librsvg2-dev && \
   apt-get install --no-install-recommends -q -y aspell aspell-en wamerican && \
   apt-get install --no-install-recommends -q -y cmigemo exuberant-ctags silversearcher-ag && \
   apt-get install --no-install-recommends -q -y sdic sdic-edict sdic-gene95 && \
   wget -q -O - http://ftpmirror.gnu.org/emacs/emacs-${emacs}.tar.xz | tar xJf - && \
   mv emacs-${emacs} .build_emacs && \
-  (cd .build_emacs && ./configure --with-x-toolkit=gtk3 --with-xwidgets && make install) && \
+  (cd .build_emacs && ./configure --with-x-toolkit=lucid && make install) && \
   rm -rf .build_emacs && \
   rm -rf /var/lib/apt/lists/* /tmp/*
 
@@ -64,7 +58,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.17.6 && \
+  : version && hadolint=1.17.3 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -87,7 +81,7 @@ RUN \
   rm -rf /root/.gem
 
 RUN \
-  : version && node=12.17.0 && \
+  : version && node=12.14.0 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -129,7 +123,7 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && golang=1.14.3 && \
+  : version && golang=1.13.5 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export GOPATH=/opt/go && \
@@ -158,9 +152,4 @@ RUN \
 COPY my-adoc.sh my-adoc-pdf.sh /usr/local/bin/
 
 COPY bootstrap.sh /usr/local/sbin/
-COPY startup.sh /usr/local/sbin/
-COPY fake_Xvnc.sh /usr/bin/X11/Xvnc
-COPY docker-xvfb-jp.xrdp.ini /etc/xrdp/xrdp.ini
-COPY docker-xvfb-jp.sesman.ini /etc/xrdp/sesman.ini
-
 ENTRYPOINT [ "/usr/local/sbin/bootstrap.sh" ]
