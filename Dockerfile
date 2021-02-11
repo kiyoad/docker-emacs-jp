@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 RUN \
 apt-get update && \
@@ -13,7 +13,7 @@ ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
-  : version && emacs=26.3 && \
+  : version && emacs=27.1 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates fonts-ricty-diminished && \
@@ -58,30 +58,29 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.18.0 && \
+  : version && hadolint=1.22.1 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y python-pip python-setuptools python3-pip python3-setuptools libpython3.6-dev && \
+  apt-get install --no-install-recommends -q -y python3-pip python3-setuptools && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
-  pip install pygments && \
   pip3 install wheel && \
-  pip3 install flake8 diff-highlight pylint mypy proselint 'python-language-server[all]' && \
+  pip3 install Pygments flake8 diff-highlight pylint mypy proselint 'python-language-server[all]' && \
   rm -rf /root/.cache
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install --no-install-recommends -q -y ruby2.5-dev && \
+  apt-get install --no-install-recommends -q -y ruby-dev && \
   rm -rf /var/lib/apt/lists/* /tmp/* && \
   gem install -N mdl rubocop reek ruby-lint sqlint scss_lint solargraph && \
   rm -rf /root/.gem
 
 RUN \
-  : version && node=12.18.2 && \
+  : version && node=14.15.5 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -115,7 +114,7 @@ RUN \
   rm -rf /root/.npm /root/.config
 
 RUN \
-  : version && global=6.6.4 && \
+  : version && global=6.6.5 && \
   wget -q -O - http://ftpmirror.gnu.org/global/global-${global}.tar.gz | tar zxf - && \
   mv global-${global} .build_global && \
   (cd .build_global && PYTHON=/usr/bin/python3 ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
@@ -123,7 +122,7 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && golang=1.14.6 && \
+  : version && golang=1.15.8 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export GOPATH=/opt/go && \
