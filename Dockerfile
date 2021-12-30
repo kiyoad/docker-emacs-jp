@@ -13,7 +13,7 @@ ENV LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
-  : version && emacs=27.1 && \
+  : version && emacs=27.2 && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get install --no-install-recommends -q -y gcc make xz-utils wget bsdmainutils ssh ca-certificates fonts-ricty-diminished && \
@@ -58,7 +58,7 @@ RUN \
   rm -rf shellcheck-latest
 
 RUN \
-  : version && hadolint=1.22.1 && \
+  : version && hadolint=2.8.0 && \
   wget -q -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v${hadolint}/hadolint-Linux-x86_64 && \
   chmod a+x /usr/local/bin/hadolint
 
@@ -80,7 +80,7 @@ RUN \
   rm -rf /root/.gem
 
 RUN \
-  : version && node=14.15.5 && \
+  : version && node=16.13.1 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -114,7 +114,7 @@ RUN \
   rm -rf /root/.npm /root/.config
 
 RUN \
-  : version && global=6.6.5 && \
+  : version && global=6.6.8 && \
   wget -q -O - http://ftpmirror.gnu.org/global/global-${global}.tar.gz | tar zxf - && \
   mv global-${global} .build_global && \
   (cd .build_global && PYTHON=/usr/bin/python3 ./configure --with-exuberant-ctags=/usr/bin/ctags-exuberant && make install) && \
@@ -122,7 +122,7 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && golang=1.15.8 && \
+  : version && golang=1.17.5 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export GOPATH=/opt/go && \
