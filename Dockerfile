@@ -80,7 +80,7 @@ RUN \
   rm -rf /root/.gem
 
 RUN \
-  : version && node=16.13.1 && \
+  : version && node=16.13.2 && \
   wget -q -O - https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.xz | tar -C /usr/local -xJf - && \
   chown -R root:root /usr/local/node-v${node}-linux-x64 && \
   export PATH=/usr/local/node-v${node}-linux-x64/bin:${PATH} && \
@@ -122,12 +122,12 @@ RUN \
   rm -rf .build_global
 
 RUN \
-  : version && golang=1.17.5 && \
+  : version && golang=1.17.6 && \
   wget -q -O - https://storage.googleapis.com/golang/go${golang}.linux-amd64.tar.gz | tar -C /usr/local -zxf  - && \
   mkdir /opt/go && \
   export GOPATH=/opt/go && \
   export PATH=$PATH:/usr/local/go/bin && \
-  GO111MODULE=on go get golang.org/x/tools/gopls@latest && \
+  GO111MODULE=on go install golang.org/x/tools/gopls@latest && \
   (cd /usr/local/go && find bin -type f -exec ln -s /usr/local/go/{} /usr/local/{} \;) && \
   (cd /opt/go && find bin -type f -exec ln -s /opt/go/{} /usr/local/{} \;) && \
   rm -rf /root/.cache
